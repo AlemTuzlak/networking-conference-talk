@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1 style={{ color: "blue", fontSize: "2rem" }}>Hello from JSX!</h1>
+      <h1 className="text-2xl text-blue-500">Hello from JSX!</h1>
       <p>This is JSX without React - pure DOM elements!</p>
       <button onClick={handleClick}>Click me!</button>
 
