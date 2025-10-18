@@ -8,15 +8,21 @@ type Children = Child[];
 
 /**
  * Creates a DOM element from JSX
- * @param tag - HTML tag name or Fragment symbol
+ * @param tag - HTML tag name, function component, or Fragment symbol
  * @param props - Element properties and attributes
  * @param children - Child elements
  */
 export function h(
-  tag: string | symbol,
+  tag: string | symbol | Function,
   props: Props,
   ...children: Children
 ): Node | DocumentFragment {
+  // Handle function components
+  if (typeof tag === 'function') {
+    const componentProps = { ...props, children: children.length === 1 ? children[0] : children };
+    return tag(componentProps);
+  }
+
   // Handle fragments
   if (tag === Fragment) {
     const fragment = document.createDocumentFragment();

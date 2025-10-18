@@ -18,7 +18,9 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-
+    "paths": {
+      "@/jsx/global": ["./src/jsx/global.ts"]
+    },
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
