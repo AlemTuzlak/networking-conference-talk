@@ -117,6 +117,25 @@ declare namespace JSX {
     var: HTMLAttributes<HTMLElement>;
     video: HTMLAttributes<HTMLVideoElement>;
     wbr: HTMLAttributes<HTMLElement>;
+
+    // SVG Elements
+    svg: SVGAttributes<SVGSVGElement>;
+    path: SVGAttributes<SVGPathElement>;
+    circle: SVGAttributes<SVGCircleElement>;
+    rect: SVGAttributes<SVGRectElement>;
+    line: SVGAttributes<SVGLineElement>;
+    polyline: SVGAttributes<SVGPolylineElement>;
+    polygon: SVGAttributes<SVGPolygonElement>;
+    g: SVGAttributes<SVGGElement>;
+    defs: SVGAttributes<SVGDefsElement>;
+    clipPath: SVGAttributes<SVGClipPathElement>;
+    linearGradient: SVGAttributes<SVGLinearGradientElement>;
+    radialGradient: SVGAttributes<SVGRadialGradientElement>;
+    stop: SVGAttributes<SVGStopElement>;
+    ellipse: SVGAttributes<SVGEllipseElement>;
+    text: SVGAttributes<SVGTextElement>;
+    tspan: SVGAttributes<SVGTSpanElement>;
+    use: SVGAttributes<SVGUseElement>;
   }
 
   interface HTMLAttributes<T = HTMLElement> {
@@ -210,6 +229,57 @@ declare namespace JSX {
     onPaste?: (event: ClipboardEvent) => void;
 
     // Other common attributes
+    [key: string]: any;
+  }
+
+  interface SVGAttributes<T = SVGElement> {
+    // Core SVG Attributes
+    className?: string;
+    id?: string;
+
+    // Presentation Attributes
+    fill?: string;
+    stroke?: string;
+    strokeWidth?: number | string;
+    strokeLinecap?: 'butt' | 'round' | 'square';
+    strokeLinejoin?: 'miter' | 'round' | 'bevel';
+    strokeDasharray?: string | number;
+    strokeDashoffset?: string | number;
+    opacity?: number | string;
+    fillOpacity?: number | string;
+    strokeOpacity?: number | string;
+
+    // Transform
+    transform?: string;
+
+    // SVG specific
+    viewBox?: string;
+    width?: number | string;
+    height?: number | string;
+    x?: number | string;
+    y?: number | string;
+    cx?: number | string;
+    cy?: number | string;
+    r?: number | string;
+    rx?: number | string;
+    ry?: number | string;
+    d?: string;
+    points?: string;
+    x1?: number | string;
+    y1?: number | string;
+    x2?: number | string;
+    y2?: number | string;
+
+    // Event handlers
+    onClick?: (event: MouseEvent) => void;
+    onMouseDown?: (event: MouseEvent) => void;
+    onMouseEnter?: (event: MouseEvent) => void;
+    onMouseLeave?: (event: MouseEvent) => void;
+    onMouseMove?: (event: MouseEvent) => void;
+    onMouseOut?: (event: MouseEvent) => void;
+    onMouseOver?: (event: MouseEvent) => void;
+    onMouseUp?: (event: MouseEvent) => void;
+
     [key: string]: any;
   }
 

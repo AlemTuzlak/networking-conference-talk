@@ -32,16 +32,20 @@ export function h(
     return fragment;
   }
 
-  // Create element
-  const element = document.createElement(tag as string);
+  // Create element (check if it's an SVG element)
+  const svgTags = ['svg', 'path', 'circle', 'rect', 'line', 'polyline', 'polygon', 'g', 'defs', 'clipPath', 'linearGradient', 'radialGradient', 'stop', 'ellipse', 'text', 'tspan', 'use'];
+  const isSvg = svgTags.includes(tag as string);
+  const element = isSvg
+    ? document.createElementNS('http://www.w3.org/2000/svg', tag as string)
+    : document.createElement(tag as string);
 
   // Apply props
   if (props) {
     Object.entries(props).forEach(([key, value]) => {
       if (key === 'className') {
-        element.className = value;
+        element.setAttribute('class', value);
       } else if (key === 'style' && typeof value === 'object') {
-        Object.assign(element.style, value);
+        Object.assign((element as HTMLElement).style, value);
       } else if (key.startsWith('on') && typeof value === 'function') {
         // Event handlers: onClick -> click
         const eventName = key.substring(2).toLowerCase();
