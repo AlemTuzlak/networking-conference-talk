@@ -9,13 +9,13 @@ export function Header({ onNewNote }: { onNewNote?: () => void }) {
     if (onNewNote) {
       onNewNote();
     } else {
-      navigate("/notes/new");
+      navigate("/notes/new", { viewTransition: true });
     }
   };
 
   const handleLogoClick = (e: Event) => {
     e.preventDefault();
-    navigate("/");
+    navigate("/", { viewTransition: true });
   };
 
   return (

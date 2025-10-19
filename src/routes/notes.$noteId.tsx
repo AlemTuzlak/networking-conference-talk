@@ -26,7 +26,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Note not found</h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">The note you're looking for doesn't exist.</p>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/", { viewTransition: true })}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all"
             >
               Back to Home
@@ -44,7 +44,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
   let selectedColor = note.color || "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
 
   const handleBack = () => {
-    navigate("/");
+    navigate("/", { viewTransition: true });
   };
 
   const handleColorChange = (color: string) => {
@@ -96,7 +96,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
       // Broadcast the note update to other tabs/windows
       broadcastNoteChange({ type: "note-updated", noteId: note.id });
 
-      navigate("/");
+      navigate("/", { viewTransition: true });
     } catch (error) {
       console.error("Failed to save note:", error);
       toast({ message: "Failed to save note. Please try again.", type: "error" });
@@ -113,7 +113,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
           // Broadcast the note deletion to other tabs/windows
           broadcastNoteChange({ type: "note-deleted", noteId: note.id });
 
-          navigate("/");
+          navigate("/", { viewTransition: true });
         } else {
           toast({ message: "Failed to delete note. Please try again.", type: "error" });
         }

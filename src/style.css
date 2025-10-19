@@ -15,3 +15,30 @@
 .animate-slide-in {
   animation: slide-in 0.3s ease-out;
 }
+
+/* View Transitions API - Swipe effect */
+::view-transition-old(root) {
+  animation: swipe-out 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-new(root) {
+  animation: swipe-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes swipe-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes swipe-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

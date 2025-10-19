@@ -28,7 +28,7 @@ export async function Home() {
     : allNotes;
 
   const handleNewNote = () => {
-    navigate("/notes/new");
+    navigate("/notes/new", { viewTransition: true });
   };
 
   const stats = {
@@ -110,7 +110,7 @@ export async function Home() {
             <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">No notes found</h3>
             <p className="text-gray-500 dark:text-gray-400 mb-6">No notes match your search for "{searchQuery}"</p>
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/", { viewTransition: true })}
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-all"
             >
               Clear Search

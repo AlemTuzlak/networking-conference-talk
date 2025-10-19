@@ -7,6 +7,10 @@ export type Route = {
   component: (props?: { params: Record<string, string> }) => Node | Promise<Node>;
 };
 
+export type NavigateOptions = {
+  viewTransition?: boolean;
+};
+
 export class Router {
   private routes: Route[] = [];
   private currentRoute: Route | null = null;
@@ -36,9 +40,14 @@ export class Router {
     this.render();
   }
 
-  navigate(path: string) {
+  navigate(path: string, options: NavigateOptions = {}) {
     window.history.pushState({}, '', path);
-    this.render();
+
+    if (options.viewTransition) {
+      this.renderWithTransition();
+    } else {
+      this.render();
+    }
   }
 
   private matchRoute(path: string): { route: Route; params: Record<string, string> } | null {
@@ -89,6 +98,17 @@ export class Router {
       this.container.appendChild(component);
     }
   }
+
+  private async renderWithTransition() {
+    // Check if View Transitions API is supported
+    if ('startViewTransition' in document) {
+      // @ts-ignore - View Transitions API type
+      await document.startViewTransition(() => this.render()).finished;
+    } else {
+      // Fallback for browsers that don't support View Transitions
+      await this.render();
+    }
+  }
 }
 
 /**
@@ -100,8 +120,8 @@ export function setRouterInstance(router: Router) {
   routerInstance = router;
 }
 
-export function navigate(path: string) {
+export function navigate(path: string, options: NavigateOptions = {}) {
   if (routerInstance) {
-    routerInstance.navigate(path);
+    routerInstance.navigate(path, options);
   }
 }
