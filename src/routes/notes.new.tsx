@@ -7,6 +7,7 @@ import { BackButton } from "../components/BackButton";
 import { NoteEditor } from "../components/NoteEditor";
 import { navigate } from "../router";
 import { createNote } from "../store/notes";
+import { toast } from "../components/Toast";
 
 export async function NewNoteRoute() {
   let titleInput: HTMLInputElement;
@@ -57,17 +58,17 @@ export async function NewNoteRoute() {
     const content = contentTextarea.value.trim();
 
     if (!title && !content) {
-      alert("Please add a title or content to your note");
+      toast({ message: "Please add a title or content to your note", type: "warning" });
       return;
     }
 
     try {
       const newNote = await createNote({ title, content, color: selectedColor });
-      alert("Note created successfully!");
+      toast({ message: "Note created successfully!", type: "success" });
       navigate(`/notes/${newNote.id}`);
     } catch (error) {
       console.error("Failed to create note:", error);
-      alert("Failed to create note. Please try again.");
+      toast({ message: "Failed to create note. Please try again.", type: "error" });
     }
   };
 

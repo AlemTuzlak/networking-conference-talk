@@ -7,6 +7,7 @@ import { BackButton } from "../components/BackButton";
 import { NoteEditor } from "../components/NoteEditor";
 import { navigate } from "../router";
 import { getNote, updateNote, deleteNote } from "../store/notes";
+import { toast } from "../components/Toast";
 
 export async function NoteDetailRoute(props?: { params: Record<string, string> }) {
   const noteId = props?.params?.noteId ? parseInt(props.params.noteId, 10) : 0;
@@ -83,17 +84,17 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
     const content = contentTextarea.value.trim();
 
     if (!title && !content) {
-      alert("Please add a title or content to your note");
+      toast({ message: "Please add a title or content to your note", type: "warning" });
       return;
     }
 
     try {
       await updateNote(note.id, { title, content, color: selectedColor });
-
+      toast({ message: "Note saved successfully!", type: "success" });
       navigate("/");
     } catch (error) {
       console.error("Failed to save note:", error);
-      alert("Failed to save note. Please try again.");
+      toast({ message: "Failed to save note. Please try again.", type: "error" });
     }
   };
 
@@ -102,14 +103,14 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
       try {
         const success = await deleteNote(note.id);
         if (success) {
-          alert("Note deleted successfully!");
+          toast({ message: "Note deleted successfully!", type: "success" });
           navigate("/");
         } else {
-          alert("Failed to delete note. Please try again.");
+          toast({ message: "Failed to delete note. Please try again.", type: "error" });
         }
       } catch (error) {
         console.error("Failed to delete note:", error);
-        alert("Failed to delete note. Please try again.");
+        toast({ message: "Failed to delete note. Please try again.", type: "error" });
       }
     }
   };

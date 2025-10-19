@@ -1,5 +1,5 @@
 /**
- * Toast Notification Component
+ * Toast Notification Component with Custom Events
  */
 
 export type ToastType = "success" | "error" | "info" | "warning";
@@ -10,7 +10,17 @@ export type ToastData = {
   type: ToastType;
 };
 
-export function Toast({ toast }: { toast: ToastData }) {
+export type ToastInput = Omit<ToastData, "id">;
+
+// Utility function to show a toast notification
+export function toast(data: ToastInput) {
+  const event = new CustomEvent("toast", {
+    detail: data,
+  });
+  window.dispatchEvent(event);
+}
+
+function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: string) => void }) {
   const getIcon = () => {
     switch (toast.type) {
       case "success":
@@ -85,10 +95,7 @@ export function Toast({ toast }: { toast: ToastData }) {
       </div>
       <button
         className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-        onClick={() => {
-          // TODO: Implement dismiss logic
-          console.log("Dismiss toast:", toast.id);
-        }}
+        onClick={() => onDismiss(toast.id)}
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -98,10 +105,54 @@ export function Toast({ toast }: { toast: ToastData }) {
   );
 }
 
-export function ToastContainer({ toasts }: { toasts: ToastData[] }) {
-  return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
-      <div className="pointer-events-auto">{toasts.map((toast) => Toast({ toast }))}</div>
-    </div>
-  );
+export function ToastContainer() {
+  let toasts: ToastData[] = [];
+  let container: HTMLDivElement | null = null;
+
+  const addToast = (data: ToastInput) => {
+    const id = `toast-${Date.now()}-${Math.random()}`;
+    const newToast: ToastData = { ...data, id };
+    toasts.push(newToast);
+    render();
+
+    // Auto-dismiss after 4 seconds
+    setTimeout(() => {
+      removeToast(id);
+    }, 4000);
+  };
+
+  const removeToast = (id: string) => {
+    toasts = toasts.filter((t) => t.id !== id);
+    render();
+  };
+
+  const render = () => {
+    if (!container) return;
+
+    // Clear container
+    container.innerHTML = "";
+
+    // Render each toast
+    toasts.forEach((toast) => {
+      const toastElement = ToastItem({ toast, onDismiss: removeToast });
+      container!.appendChild(toastElement);
+    });
+  };
+
+  const handleToastEvent = (event: Event) => {
+    const customEvent = event as CustomEvent<ToastInput>;
+    addToast(customEvent.detail);
+  };
+
+  // Create the container element
+  const innerContainer = document.createElement("div");
+  innerContainer.className = "pointer-events-auto";
+  container = innerContainer;
+
+  // Setup event listener after DOM is ready
+  setTimeout(() => {
+    window.addEventListener("toast", handleToastEvent);
+  }, 0);
+
+  return <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">{innerContainer}</div>;
 }
