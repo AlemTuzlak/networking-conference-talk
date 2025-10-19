@@ -1,2 +1,3 @@
-import './style.css'
-import "./app.tsx";
+import './jsx/global';
+import './style.css';
+import './app.tsx';

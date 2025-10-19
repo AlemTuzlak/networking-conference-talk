@@ -5,8 +5,7 @@ export default defineConfig({
   plugins: [tailwindcss(), tsconfigPaths()],
   esbuild: {
     jsxFactory: 'h',
-    jsxFragment: 'Fragment',
-    jsxInject: `import { h, Fragment } from '@/jsx/global'`
+    jsxFragment: 'Fragment'
   } as any,
   server: { open: true }
 })

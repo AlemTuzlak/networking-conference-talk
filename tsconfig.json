@@ -19,7 +19,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "paths": {
-      "@/jsx/global": ["./src/jsx/global.ts"]
+      "@/jsx/runtime": ["./src/jsx/runtime.ts"]
     },
     /* Linting */
     "strict": true,
