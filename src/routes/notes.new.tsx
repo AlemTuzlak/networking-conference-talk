@@ -8,6 +8,7 @@ import { NoteEditor } from "../components/NoteEditor";
 import { navigate } from "../router";
 import { createNote } from "../store/notes";
 import { toast } from "../components/Toast";
+import { broadcastNoteChange } from "../utils/broadcast";
 
 export async function NewNoteRoute() {
   let titleInput: HTMLInputElement;
@@ -65,6 +66,10 @@ export async function NewNoteRoute() {
     try {
       const newNote = await createNote({ title, content, color: selectedColor });
       toast({ message: "Note created successfully!", type: "success" });
+
+      // Broadcast the note creation to other tabs/windows
+      broadcastNoteChange({ type: "note-created", noteId: newNote.id });
+
       navigate(`/notes/${newNote.id}`);
     } catch (error) {
       console.error("Failed to create note:", error);

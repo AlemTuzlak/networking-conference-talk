@@ -8,6 +8,7 @@ import { StatsCards } from "../components/StatsCards";
 import { NoteCard } from "../components/NoteCard";
 import { getAllNotes } from "../store/notes";
 import { navigate } from "../router";
+import { subscribeToBroadcast } from "../utils/broadcast";
 
 export async function Home() {
   // Get search query from URL params
@@ -34,6 +35,16 @@ export async function Home() {
     total: allNotes.length,
     recent: allNotes.filter((n) => Date.now() - n.updatedAt < 172800000).length,
   };
+
+  subscribeToBroadcast((message) => {
+    if (message.type === "note-created" || message.type === "note-updated" || message.type === "note-deleted") {
+      // Refresh the page by triggering a page refresh
+      function refresh() {
+        window.location.reload();
+      }
+      refresh();
+    }
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">

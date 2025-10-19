@@ -8,6 +8,7 @@ import { NoteEditor } from "../components/NoteEditor";
 import { navigate } from "../router";
 import { getNote, updateNote, deleteNote } from "../store/notes";
 import { toast } from "../components/Toast";
+import { broadcastNoteChange } from "../utils/broadcast";
 
 export async function NoteDetailRoute(props?: { params: Record<string, string> }) {
   const noteId = props?.params?.noteId ? parseInt(props.params.noteId, 10) : 0;
@@ -91,6 +92,10 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
     try {
       await updateNote(note.id, { title, content, color: selectedColor });
       toast({ message: "Note saved successfully!", type: "success" });
+
+      // Broadcast the note update to other tabs/windows
+      broadcastNoteChange({ type: "note-updated", noteId: note.id });
+
       navigate("/");
     } catch (error) {
       console.error("Failed to save note:", error);
@@ -104,6 +109,10 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
         const success = await deleteNote(note.id);
         if (success) {
           toast({ message: "Note deleted successfully!", type: "success" });
+
+          // Broadcast the note deletion to other tabs/windows
+          broadcastNoteChange({ type: "note-deleted", noteId: note.id });
+
           navigate("/");
         } else {
           toast({ message: "Failed to delete note. Please try again.", type: "error" });
