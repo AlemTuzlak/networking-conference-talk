@@ -4,6 +4,8 @@
 
 import { Router, setRouterInstance } from "./router";
 import { Home } from "./routes/home";
+import { NewNoteRoute } from "./routes/notes.new";
+import { NoteDetailRoute } from "./routes/notes.$noteId";
 import { ToastContainer } from "./components/Toast";
 import type { ToastData } from "./components/Toast";
 
@@ -14,7 +16,8 @@ function App() {
   // Define routes
   const routes = [
     { path: "/", component: Home },
-    // Add more routes here as needed
+    { path: "/notes/new", component: NewNoteRoute },
+    { path: "/notes/:noteId", component: NoteDetailRoute },
   ];
 
   // Initialize router

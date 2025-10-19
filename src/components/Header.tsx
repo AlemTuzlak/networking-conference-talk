@@ -9,7 +9,7 @@ export function Header({ onNewNote }: { onNewNote?: () => void }) {
     if (onNewNote) {
       onNewNote();
     } else {
-      alert("Creating a new note...");
+      navigate("/notes/new");
     }
   };
 

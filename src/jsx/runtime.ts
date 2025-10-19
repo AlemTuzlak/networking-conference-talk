@@ -52,6 +52,16 @@ export function h(
         element.setAttribute('class', value);
       } else if (key === 'style' && typeof value === 'object') {
         Object.assign((element as HTMLElement).style, value);
+      } else if (key === 'defaultValue') {
+        // Handle defaultValue for input/textarea
+        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
+          element.value = String(value);
+        }
+      } else if (key === 'defaultChecked') {
+        // Handle defaultChecked for checkboxes/radio buttons
+        if (element instanceof HTMLInputElement) {
+          element.checked = Boolean(value);
+        }
       } else if (key.startsWith('on') && typeof value === 'function') {
         // Event handlers: onClick -> click
         const eventName = key.substring(2).toLowerCase();

@@ -2,6 +2,8 @@
  * Note Card Component
  */
 
+import { navigate } from "../router";
+
 export type Note = {
   id: number;
   title: string;
@@ -11,8 +13,13 @@ export type Note = {
 };
 
 export function NoteCard({ note }: { note: Note }) {
+  const handleClick = () => {
+    navigate(`/notes/${note.id}`);
+  };
+
   return (
     <div
+      onClick={handleClick}
       className={`${note.color} rounded-lg p-3 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all cursor-pointer group`}
     >
       <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">

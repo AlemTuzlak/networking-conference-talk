@@ -4,7 +4,7 @@
 
 export type Route = {
   path: string;
-  component: () => Node;
+  component: (props?: { params: Record<string, string> }) => Node | Promise<Node>;
 };
 
 export class Router {
@@ -41,14 +41,51 @@ export class Router {
     this.render();
   }
 
-  private render() {
-    const path = window.location.pathname;
-    const route = this.routes.find((r) => r.path === path) || this.routes[0];
+  private matchRoute(path: string): { route: Route; params: Record<string, string> } | null {
+    for (const route of this.routes) {
+      const params = this.extractParams(route.path, path);
+      if (params !== null) {
+        return { route, params };
+      }
+    }
+    return null;
+  }
 
-    if (route !== this.currentRoute) {
-      this.currentRoute = route;
+  private extractParams(pattern: string, path: string): Record<string, string> | null {
+    const patternParts = pattern.split('/').filter(Boolean);
+    const pathParts = path.split('/').filter(Boolean);
+
+    if (patternParts.length !== pathParts.length) {
+      return null;
+    }
+
+    const params: Record<string, string> = {};
+
+    for (let i = 0; i < patternParts.length; i++) {
+      const patternPart = patternParts[i];
+      const pathPart = pathParts[i];
+
+      if (patternPart.startsWith(':')) {
+        // Dynamic segment
+        const paramName = patternPart.slice(1);
+        params[paramName] = pathPart;
+      } else if (patternPart !== pathPart) {
+        // Static segment doesn't match
+        return null;
+      }
+    }
+
+    return params;
+  }
+
+  private async render() {
+    const path = window.location.pathname;
+    const match = this.matchRoute(path) || { route: this.routes[0], params: {} };
+
+    if (match.route !== this.currentRoute) {
+      this.currentRoute = match.route;
       this.container.innerHTML = '';
-      const component = route.component();
+      const component = await match.route.component({ params: match.params });
       this.container.appendChild(component);
     }
   }
