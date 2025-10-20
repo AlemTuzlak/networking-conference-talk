@@ -40,10 +40,10 @@ export class Router {
     this.render();
   }
 
-  navigate(path: string, options: NavigateOptions = {}) {
+  navigate(path: string, options: NavigateOptions = { viewTransition: true }) {
     window.history.pushState({}, '', path);
 
-    if (options.viewTransition) {
+    if (options.viewTransition && 'startViewTransition' in document) {
       this.renderWithTransition();
     } else {
       this.render();
@@ -100,13 +100,15 @@ export class Router {
   }
 
   private async renderWithTransition() {
-    // Check if View Transitions API is supported
-    if ('startViewTransition' in document) {
-      // @ts-ignore - View Transitions API type
-      await document.startViewTransition(() => this.render()).finished;
-    } else {
-      // Fallback for browsers that don't support View Transitions
+    // @ts-ignore - View Transitions API type
+    const transition = document.startViewTransition(async () => {
       await this.render();
+    });
+
+    try {
+      await transition.finished;
+    } catch (e) {
+      // Transition was skipped or interrupted, ignore
     }
   }
 }
@@ -120,7 +122,7 @@ export function setRouterInstance(router: Router) {
   routerInstance = router;
 }
 
-export function navigate(path: string, options: NavigateOptions = {}) {
+export function navigate(path: string, options: NavigateOptions = { viewTransition: true }) {
   if (routerInstance) {
     routerInstance.navigate(path, options);
   }
