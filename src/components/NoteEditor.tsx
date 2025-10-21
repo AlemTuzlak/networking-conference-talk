@@ -2,9 +2,9 @@
  * Note Editor Component - Reusable note editing interface
  */
 
+import { checkAIAvailability, improveNoteWithAI } from "../ai/chrome-ai";
 import type { Note } from "../store/notes";
 import { ColorPicker } from "./ColorPicker";
-import { checkAIAvailability, improveNoteWithAI } from "../hooks/useChromeAI";
 import { toast } from "./Toast";
 
 interface NoteEditorProps {
