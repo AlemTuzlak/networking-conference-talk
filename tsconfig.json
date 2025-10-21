@@ -18,9 +18,6 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
-    "paths": {
-      "@/jsx/runtime": ["./src/jsx/runtime.ts"]
-    },
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

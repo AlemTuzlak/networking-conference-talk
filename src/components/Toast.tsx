@@ -149,10 +149,7 @@ export function ToastContainer() {
   innerContainer.className = "pointer-events-auto";
   container = innerContainer;
 
-  // Setup event listener after DOM is ready
-  setTimeout(() => {
-    window.addEventListener("toast", handleToastEvent);
-  }, 0);
+  window.addEventListener("toast", handleToastEvent);
 
   return <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">{innerContainer}</div>;
 }

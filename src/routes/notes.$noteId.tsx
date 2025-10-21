@@ -26,7 +26,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Note not found</h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">The note you're looking for doesn't exist.</p>
             <button
-              onClick={() => navigate("/", { viewTransition: true })}
+              onClick={() => navigate("/")}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all"
             >
               Back to Home
@@ -44,7 +44,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
   let selectedColor = note.color || "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
 
   const handleBack = () => {
-    navigate("/", { viewTransition: true });
+    navigate("/");
   };
 
   const handleColorChange = (color: string) => {
@@ -84,7 +84,7 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
     const title = titleInput.value.trim();
     const content = contentTextarea.value.trim();
 
-    if (!title && !content) {
+    if (!title || !content) {
       toast({ message: "Please add a title or content to your note", type: "warning" });
       return;
     }
@@ -92,11 +92,10 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
     try {
       await updateNote(note.id, { title, content, color: selectedColor });
       toast({ message: "Note saved successfully!", type: "success" });
-
       // Broadcast the note update to other tabs/windows
       broadcastNoteChange({ type: "note-updated", noteId: note.id });
 
-      navigate("/", { viewTransition: true });
+      navigate("/");
     } catch (error) {
       console.error("Failed to save note:", error);
       toast({ message: "Failed to save note. Please try again.", type: "error" });
@@ -105,22 +104,17 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
 
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete this note?")) {
-      try {
-        const success = await deleteNote(note.id);
-        if (success) {
-          toast({ message: "Note deleted successfully!", type: "success" });
-
-          // Broadcast the note deletion to other tabs/windows
-          broadcastNoteChange({ type: "note-deleted", noteId: note.id });
-
-          navigate("/", { viewTransition: true });
-        } else {
-          toast({ message: "Failed to delete note. Please try again.", type: "error" });
-        }
-      } catch (error) {
-        console.error("Failed to delete note:", error);
-        toast({ message: "Failed to delete note. Please try again.", type: "error" });
+      const success = await deleteNote(note.id);
+      if (!success) {
+        return toast({ message: "Failed to delete note. Please try again.", type: "error" });
       }
+
+      toast({ message: "Note deleted successfully!", type: "success" });
+
+      // Broadcast the note deletion to other tabs/windows
+      broadcastNoteChange({ type: "note-deleted", noteId: note.id });
+
+      return navigate("/");
     }
   };
 

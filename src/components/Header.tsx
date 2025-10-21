@@ -9,19 +9,19 @@ export function Header({ onNewNote }: { onNewNote?: () => void }) {
     if (onNewNote) {
       onNewNote();
     } else {
-      navigate("/notes/new", { viewTransition: true });
+      navigate("/notes/new");
     }
   };
 
   const handleLogoClick = (e: Event) => {
     e.preventDefault();
-    navigate("/", { viewTransition: true });
+    navigate("/");
   };
 
   return (
     <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-        <a href="/" data-link onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
+        <a data-link onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path

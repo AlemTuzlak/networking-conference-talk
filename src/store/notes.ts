@@ -22,7 +22,7 @@ const notesStore = localforage.createInstance({
 });
 
 // Initialize with sample data if empty
-async function initializeSampleData() {
+export async function initializeSampleData() {
   const keys = await notesStore.keys();
   if (keys.length === 0) {
     const sampleNotes: Note[] = [
@@ -78,8 +78,6 @@ async function initializeSampleData() {
   }
 }
 
-// Initialize on module load
-initializeSampleData();
 
 /**
  * Get all notes
@@ -118,7 +116,7 @@ export async function createNote(noteData: {
     content: noteData.content || "",
     preview,
     date: formatDate(now),
-    color: noteData.color || "bg-gray-50 dark:bg-gray-950/30",
+    color: noteData.color || "bg-green-50 dark:bg-green-950/30",
     createdAt: now,
     updatedAt: now,
   };
@@ -141,7 +139,6 @@ export async function updateNote(
     ...note,
     ...updates,
     preview: (updates.content || note.content).slice(0, 100).replace(/\n/g, " "),
-    date: formatDate(Date.now()),
     updatedAt: Date.now(),
   };
 

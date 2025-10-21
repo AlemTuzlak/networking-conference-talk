@@ -18,7 +18,7 @@ export async function NewNoteRoute() {
   let selectedColor = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"; // Default green
 
   const handleBack = () => {
-    navigate("/", { viewTransition: true });
+    navigate("/");
   };
 
   const handleColorChange = (color: string) => {
@@ -70,7 +70,7 @@ export async function NewNoteRoute() {
       // Broadcast the note creation to other tabs/windows
       broadcastNoteChange({ type: "note-created", noteId: newNote.id });
 
-      navigate(`/notes/${newNote.id}`, { viewTransition: true });
+      navigate(`/notes/${newNote.id}`);
     } catch (error) {
       console.error("Failed to create note:", error);
       toast({ message: "Failed to create note. Please try again.", type: "error" });

@@ -2,11 +2,12 @@
  * Main App Component with Router
  */
 
-import { Router, setRouterInstance } from "./router";
+import { Router } from "./router";
 import { Home } from "./routes/home";
 import { NewNoteRoute } from "./routes/notes.new";
 import { NoteDetailRoute } from "./routes/notes.$noteId";
 import { ToastContainer } from "./components/Toast";
+import { initializeSampleData } from "./store/notes";
 
 function App() {
   const container = document.createElement("div");
@@ -20,17 +21,22 @@ function App() {
   ];
 
   // Initialize router
-  const router = new Router(container, routes);
-  setRouterInstance(router);
+  new Router(container, routes);
 
   // Create wrapper to hold both router and toast
   const wrapper = document.createElement("div");
   wrapper.appendChild(container);
-  wrapper.appendChild(ToastContainer());
 
-  return wrapper;
+  return (
+    <div>
+      {container}
+      <ToastContainer />
+    </div>
+  );
 }
 
+// Initialize on module load
+await initializeSampleData();
 // Mount the app
 const root = document.querySelector("#app");
 if (root) {

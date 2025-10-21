@@ -61,9 +61,7 @@ export function NoteEditor({
       textarea.value = improvedContent;
 
       // Trigger onInput to update stats
-      if (onInput) {
-        onInput();
-      }
+      onInput?.();
 
       toast({ message: "Note improved with AI!", type: "success" });
     } catch (error) {

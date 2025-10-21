@@ -26,13 +26,9 @@ export function broadcastNoteChange(message: BroadcastMessage) {
 
 export function subscribeToBroadcast(callback: (message: BroadcastMessage) => void) {
   const channel = getBroadcastChannel();
-  const handler = (event: MessageEvent<BroadcastMessage>) => {
-    callback(event.data);
-  };
+  const handler = (event: MessageEvent<BroadcastMessage>) => callback(event.data);
   channel.addEventListener("message", handler);
 
   // Return cleanup function
-  return () => {
-    channel.removeEventListener("message", handler);
-  };
+  return () => channel.removeEventListener("message", handler);
 }

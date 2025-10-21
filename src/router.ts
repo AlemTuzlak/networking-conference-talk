@@ -11,6 +11,12 @@ export type NavigateOptions = {
   viewTransition?: boolean;
 };
 
+
+/**
+ * Navigate to a route programmatically
+ */
+let routerInstance: Router | null = null;
+
 export class Router {
   private routes: Route[] = [];
   private currentRoute: Route | null = null;
@@ -19,7 +25,7 @@ export class Router {
   constructor(container: HTMLElement, routes: Route[]) {
     this.container = container;
     this.routes = routes;
-
+    routerInstance = this;
     // Listen for popstate (back/forward browser buttons)
     window.addEventListener('popstate', () => this.render());
 
@@ -28,6 +34,7 @@ export class Router {
       const target = e.target as HTMLElement;
       const link = target.closest('[data-link]');
       if (link) {
+        // stop default link behavior (full page reload to another page)
         e.preventDefault();
         const href = link.getAttribute('href');
         if (href) {
@@ -93,14 +100,13 @@ export class Router {
 
     if (match.route !== this.currentRoute) {
       this.currentRoute = match.route;
-      this.container.innerHTML = '';
       const component = await match.route.component({ params: match.params });
+      this.container.innerHTML = '';
       this.container.appendChild(component);
     }
   }
 
   private async renderWithTransition() {
-    // @ts-ignore - View Transitions API type
     const transition = document.startViewTransition(async () => {
       await this.render();
     });
@@ -113,16 +119,8 @@ export class Router {
   }
 }
 
-/**
- * Navigate to a route programmatically
- */
-let routerInstance: Router | null = null;
 
-export function setRouterInstance(router: Router) {
-  routerInstance = router;
-}
-
-export function navigate(path: string, options: NavigateOptions = { viewTransition: true }) {
+export function navigate(path: string, options: NavigateOptions = { viewTransition: false }) {
   if (routerInstance) {
     routerInstance.navigate(path, options);
   }

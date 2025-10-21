@@ -42,11 +42,13 @@ export function ColorPicker({ selectedColor, onChange }: ColorPickerProps) {
               className="sr-only"
             />
             <div
-              className={`w-6 h-6 rounded-full ${color.value} border-2 ${
+              className={[
+                "w-6 h-6 rounded-full border-2 transition-all",
+                color.value,
                 selectedColor === color.value
                   ? "border-gray-900 dark:border-white scale-110"
-                  : "border-transparent hover:border-gray-400"
-              } transition-all`}
+                  : "border-transparent hover:border-gray-400",
+              ].join(" ")}
             />
           </label>
         ))}
