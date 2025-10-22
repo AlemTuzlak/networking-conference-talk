@@ -21,9 +21,18 @@ export function Header({ onNewNote }: { onNewNote?: () => void }) {
   return (
     <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-        <a data-link onClick={handleLogoClick} className="flex items-center gap-2 cursor-pointer">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a
+          data-link
+          onClick={handleLogoClick}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <svg
+              className="w-5 h-5 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -32,15 +41,27 @@ export function Header({ onNewNote }: { onNewNote?: () => void }) {
               />
             </svg>
           </div>
-          <h1 className="text-lg font-bold text-gray-900 dark:text-white">Notes</h1>
+          <h1 className="text-lg font-bold text-gray-900 dark:text-white">
+            Notes
+          </h1>
         </a>
 
         <button
           onClick={handleNewNote}
           className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
         >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           New
         </button>

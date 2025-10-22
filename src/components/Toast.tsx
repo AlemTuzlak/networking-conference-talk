@@ -20,12 +20,23 @@ export function toast(data: ToastInput) {
   window.dispatchEvent(event);
 }
 
-function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: string) => void }) {
+function ToastItem({
+  toast,
+  onDismiss,
+}: {
+  toast: ToastData;
+  onDismiss: (id: string) => void;
+}) {
   const getIcon = () => {
     switch (toast.type) {
       case "success":
         return (
-          <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-5 h-5 text-green-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -36,7 +47,12 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
         );
       case "error":
         return (
-          <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-5 h-5 text-red-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -47,7 +63,12 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
         );
       case "warning":
         return (
-          <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-5 h-5 text-yellow-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -59,7 +80,12 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
       case "info":
       default:
         return (
-          <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-5 h-5 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -89,16 +115,28 @@ function ToastItem({ toast, onDismiss }: { toast: ToastData; onDismiss: (id: str
     <div
       className={`${getBackgroundColor()} border rounded-lg p-4 shadow-lg backdrop-blur-sm flex items-start gap-3 min-w-[300px] max-w-[400px] animate-slide-in`}
     >
-      <div className="flex-shrink-0">{getIcon()}</div>
+      <div className="shrink-0">{getIcon()}</div>
       <div className="flex-1">
-        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{toast.message}</p>
+        <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          {toast.message}
+        </p>
       </div>
       <button
-        className="flex-shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+        className="shrink-0 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         onClick={() => onDismiss(toast.id)}
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>
@@ -151,5 +189,9 @@ export function ToastContainer() {
 
   window.addEventListener("toast", handleToastEvent);
 
-  return <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">{innerContainer}</div>;
+  return (
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none">
+      {innerContainer}
+    </div>
+  );
 }
