@@ -3,7 +3,7 @@
  */
 
 import { checkAIAvailability, improveNoteWithAI } from "../ai/chrome-ai";
-import type { Note } from "../store/notes";
+import type { Note } from "../db/notes";
 import { ColorPicker } from "./ColorPicker";
 import { toast } from "./Toast";
 
@@ -42,7 +42,9 @@ export function NoteEditor({
     e.preventDefault();
     if (isImproving) return;
 
-    const textarea = document.querySelector('textarea[name="content"]') as HTMLTextAreaElement;
+    const textarea = document.querySelector(
+      'textarea[name="content"]'
+    ) as HTMLTextAreaElement;
     if (!textarea) return;
 
     const content = textarea.value.trim();
@@ -91,9 +93,25 @@ export function NoteEditor({
         />
         <div className="flex items-center justify-between gap-4 mt-2">
           <div className="flex items-center gap-4">
-            {note && <span className="text-sm text-gray-500 dark:text-gray-400">{note.date}</span>}
-            {note && <span className={`note-badge text-xs px-2 py-1 rounded ${selectedColor}`}>Note</span>}
-            {!note && <span className={`note-badge text-xs px-2 py-1 rounded ${selectedColor}`}>New Note</span>}
+            {note && (
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {note.date}
+              </span>
+            )}
+            {note && (
+              <span
+                className={`note-badge text-xs px-2 py-1 rounded ${selectedColor}`}
+              >
+                Note
+              </span>
+            )}
+            {!note && (
+              <span
+                className={`note-badge text-xs px-2 py-1 rounded ${selectedColor}`}
+              >
+                New Note
+              </span>
+            )}
           </div>
           <ColorPicker selectedColor={selectedColor} onChange={onColorChange} />
         </div>
@@ -110,20 +128,30 @@ export function NoteEditor({
               </span>
             </div>
             <div>
-              <span className="text-gray-500 dark:text-gray-400">Modified:</span>
+              <span className="text-gray-500 dark:text-gray-400">
+                Modified:
+              </span>
               <span className="ml-2 text-gray-900 dark:text-white">
                 {new Date(note.updatedAt).toLocaleDateString()}
               </span>
             </div>
             <div>
-              <span className="text-gray-500 dark:text-gray-400">Characters:</span>
-              <span id="char-count" className="ml-2 text-gray-900 dark:text-white">
+              <span className="text-gray-500 dark:text-gray-400">
+                Characters:
+              </span>
+              <span
+                id="char-count"
+                className="ml-2 text-gray-900 dark:text-white"
+              >
                 {charCount}
               </span>
             </div>
             <div>
               <span className="text-gray-500 dark:text-gray-400">Words:</span>
-              <span id="word-count" className="ml-2 text-gray-900 dark:text-white">
+              <span
+                id="word-count"
+                className="ml-2 text-gray-900 dark:text-white"
+              >
                 {wordCount}
               </span>
             </div>
@@ -141,8 +169,18 @@ export function NoteEditor({
             className="hidden items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             style="display: none;"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
             </svg>
             Improve with AI
           </button>

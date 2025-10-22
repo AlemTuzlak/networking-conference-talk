@@ -1,12 +1,8 @@
-/**
- * New Note Route - Create a new note
- */
-
 import { Header } from "../components/Header";
 import { BackButton } from "../components/BackButton";
 import { NoteEditor } from "../components/NoteEditor";
 import { navigate } from "../router";
-import { createNote } from "../store/notes";
+import { createNote } from "../db/notes";
 import { toast } from "../components/Toast";
 import { broadcastNoteChange } from "../utils/broadcast";
 
@@ -15,7 +11,8 @@ export async function NewNoteRoute() {
   let contentTextarea: HTMLTextAreaElement;
   let charCount = 0;
   let wordCount = 0;
-  let selectedColor = "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"; // Default green
+  let selectedColor =
+    "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"; // Default green
 
   const handleBack = () => {
     navigate("/");
@@ -44,11 +41,25 @@ export async function NewNoteRoute() {
       const visualDiv = radioInput.nextElementSibling as HTMLDivElement;
       if (visualDiv) {
         if (radioInput.checked) {
-          visualDiv.classList.remove("border-transparent", "hover:border-gray-400");
-          visualDiv.classList.add("border-gray-900", "dark:border-white", "scale-110");
+          visualDiv.classList.remove(
+            "border-transparent",
+            "hover:border-gray-400"
+          );
+          visualDiv.classList.add(
+            "border-gray-900",
+            "dark:border-white",
+            "scale-110"
+          );
         } else {
-          visualDiv.classList.remove("border-gray-900", "dark:border-white", "scale-110");
-          visualDiv.classList.add("border-transparent", "hover:border-gray-400");
+          visualDiv.classList.remove(
+            "border-gray-900",
+            "dark:border-white",
+            "scale-110"
+          );
+          visualDiv.classList.add(
+            "border-transparent",
+            "hover:border-gray-400"
+          );
         }
       }
     });
@@ -59,12 +70,19 @@ export async function NewNoteRoute() {
     const content = contentTextarea.value.trim();
 
     if (!title && !content) {
-      toast({ message: "Please add a title or content to your note", type: "warning" });
+      toast({
+        message: "Please add a title or content to your note",
+        type: "warning",
+      });
       return;
     }
 
     try {
-      const newNote = await createNote({ title, content, color: selectedColor });
+      const newNote = await createNote({
+        title,
+        content,
+        color: selectedColor,
+      });
       toast({ message: "Note created successfully!", type: "success" });
 
       // Broadcast the note creation to other tabs/windows
@@ -73,7 +91,10 @@ export async function NewNoteRoute() {
       navigate(`/notes/${newNote.id}`);
     } catch (error) {
       console.error("Failed to create note:", error);
-      toast({ message: "Failed to create note. Please try again.", type: "error" });
+      toast({
+        message: "Failed to create note. Please try again.",
+        type: "error",
+      });
     }
   };
 
@@ -91,7 +112,9 @@ export async function NewNoteRoute() {
 
   // Get input references after render
   setTimeout(() => {
-    titleInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+    titleInput = document.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
     contentTextarea = document.querySelector("textarea") as HTMLTextAreaElement;
   }, 0);
 
@@ -124,8 +147,18 @@ export async function NewNoteRoute() {
                 onClick={handleSave}
                 className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 Create Note
               </button>

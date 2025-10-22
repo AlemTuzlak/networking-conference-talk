@@ -7,7 +7,7 @@ import { Home } from "./routes/home";
 import { NewNoteRoute } from "./routes/notes.new";
 import { NoteDetailRoute } from "./routes/notes.$noteId";
 import { ToastContainer } from "./components/Toast";
-import { initializeSampleData } from "./store/notes";
+import { initializeSampleData } from "./db/notes";
 
 function App() {
   const container = document.createElement("div");

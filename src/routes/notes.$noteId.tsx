@@ -1,16 +1,14 @@
-/**
- * Note Detail Route - View and edit an existing note
- */
-
 import { Header } from "../components/Header";
 import { BackButton } from "../components/BackButton";
 import { NoteEditor } from "../components/NoteEditor";
 import { navigate } from "../router";
-import { getNote, updateNote, deleteNote } from "../store/notes";
+import { getNote, updateNote, deleteNote } from "../db/notes";
 import { toast } from "../components/Toast";
 import { broadcastNoteChange } from "../utils/broadcast";
 
-export async function NoteDetailRoute(props?: { params: Record<string, string> }) {
+export async function NoteDetailRoute(props?: {
+  params: Record<string, string>;
+}) {
   const noteId = props?.params?.noteId ? parseInt(props.params.noteId, 10) : 0;
 
   // Fetch the note
@@ -19,12 +17,16 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
   // Not found state
   if (!note) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
         <Header />
         <main className="max-w-4xl mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Note not found</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">The note you're looking for doesn't exist.</p>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Note not found
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              The note you're looking for doesn't exist.
+            </p>
             <button
               onClick={() => navigate("/")}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all"
@@ -41,7 +43,9 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
   let contentTextarea: HTMLTextAreaElement;
   let charCount = note.content.length;
   let wordCount = note.content.split(/\s+/).filter(Boolean).length;
-  let selectedColor = note.color || "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
+  let selectedColor =
+    note.color ||
+    "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
 
   const handleBack = () => {
     navigate("/");
@@ -70,11 +74,25 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
       const visualDiv = radioInput.nextElementSibling as HTMLDivElement;
       if (visualDiv) {
         if (radioInput.checked) {
-          visualDiv.classList.remove("border-transparent", "hover:border-gray-400");
-          visualDiv.classList.add("border-gray-900", "dark:border-white", "scale-110");
+          visualDiv.classList.remove(
+            "border-transparent",
+            "hover:border-gray-400"
+          );
+          visualDiv.classList.add(
+            "border-gray-900",
+            "dark:border-white",
+            "scale-110"
+          );
         } else {
-          visualDiv.classList.remove("border-gray-900", "dark:border-white", "scale-110");
-          visualDiv.classList.add("border-transparent", "hover:border-gray-400");
+          visualDiv.classList.remove(
+            "border-gray-900",
+            "dark:border-white",
+            "scale-110"
+          );
+          visualDiv.classList.add(
+            "border-transparent",
+            "hover:border-gray-400"
+          );
         }
       }
     });
@@ -85,7 +103,10 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
     const content = contentTextarea.value.trim();
 
     if (!title || !content) {
-      toast({ message: "Please add a title or content to your note", type: "warning" });
+      toast({
+        message: "Please add a title or content to your note",
+        type: "warning",
+      });
       return;
     }
 
@@ -98,7 +119,10 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
       navigate("/");
     } catch (error) {
       console.error("Failed to save note:", error);
-      toast({ message: "Failed to save note. Please try again.", type: "error" });
+      toast({
+        message: "Failed to save note. Please try again.",
+        type: "error",
+      });
     }
   };
 
@@ -106,7 +130,10 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
     if (confirm("Are you sure you want to delete this note?")) {
       const success = await deleteNote(note.id);
       if (!success) {
-        return toast({ message: "Failed to delete note. Please try again.", type: "error" });
+        return toast({
+          message: "Failed to delete note. Please try again.",
+          type: "error",
+        });
       }
 
       toast({ message: "Note deleted successfully!", type: "success" });
@@ -132,7 +159,9 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
 
   // Get input references after render
   setTimeout(() => {
-    titleInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+    titleInput = document.querySelector(
+      'input[type="text"]'
+    ) as HTMLInputElement;
     contentTextarea = document.querySelector("textarea") as HTMLTextAreaElement;
   }, 0);
 
@@ -158,7 +187,12 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
               onClick={handleDelete}
               className="flex items-center gap-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -180,8 +214,18 @@ export async function NoteDetailRoute(props?: { params: Record<string, string> }
                 onClick={handleSave}
                 className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-all"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 Save Changes
               </button>
